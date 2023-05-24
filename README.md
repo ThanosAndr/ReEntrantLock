@@ -1,6 +1,8 @@
 # ReEntrantLock
 
-This project is an implementation of a ReEntrantLock with unit tests using the googletest framework
+This project is an implementation of a ReEntrantLock with unit tests.
+
+Tools Used: CMAKE, googletest
 
 ReEntrantLock/
 |--CMakeLists.txt
