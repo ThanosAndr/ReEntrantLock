@@ -1,4 +1,4 @@
-add_subdirectory(gtest/googletest)
+add_subdirectory(googletest)
 add_subdirectory(ReEntrantLock)
 add_subdirectory(SharedClass)
 add_subdirectory(Lock)
