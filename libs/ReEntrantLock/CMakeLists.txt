@@ -8,3 +8,5 @@ target_include_directories(ReEntrantLockLib
 	PRIVATE
 		src
 )
+
+target_link_libraries(ReEntrantLockLib PUBLIC LockLib)

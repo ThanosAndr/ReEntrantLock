@@ -1,4 +1,5 @@
 #include "ReEntrantLock.hpp"
+#include "SharedClass.hpp"
 
 int main() 
 {
