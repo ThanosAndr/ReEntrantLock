@@ -7,5 +7,8 @@ Tools Used: CMAKE, googletest
 ## To Build:
     bash build.sh
 
+## To run the Application:
+    bash runApp.sh
+
 ## To run the Unit Tests:
     bash runTests.sh
