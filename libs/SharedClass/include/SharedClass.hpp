@@ -11,29 +11,30 @@
 
 class SharedClass {
 public:
+
 	SharedClass(Lock * lock) {
 		this->lock = lock;
 	}
 
-		void functionA() {
-			lock->lock();
+	void functionA() {
+		lock->lock();
 
-			shared = "functionA";
-			std::cout << "in functionA, shared variable is now " << shared << '\n';
+		shared = "functionA";
+		std::cout << "in functionA, shared variable is now " << shared << '\n';
 
-			lock->unlock();
-		}
+		lock->unlock();
+	}
 
-		void functionB() {
-			lock->lock();
+	void functionB() {
+		lock->lock();
 
-			shared = "functionB";
-			std::cout << "in functionB, shared variable is now " << shared  << '\n';
-			functionA();
-			std::cout << "back in functionB, shared variable is " << shared  << '\n';
+		shared = "functionB";
+		std::cout << "in functionB, shared variable is now " << shared  << '\n';
+		functionA();
+		std::cout << "back in functionB, shared variable is " << shared  << '\n';
 
-			lock->unlock();
-		};
+		lock->unlock();
+	}
 
 private:
 	Lock * lock;

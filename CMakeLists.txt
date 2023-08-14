@@ -18,8 +18,6 @@ endif()
 
 set(CMAKE_CXX_STANDARD 11)
 
-include_directories(app)
-
 add_subdirectory(app)
 add_subdirectory(libs)
 add_subdirectory(tests)
