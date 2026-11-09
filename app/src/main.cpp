@@ -1,15 +1,15 @@
+#include <thread>
+
 #include "ReEntrantLock.hpp"
 #include "SharedClass.hpp"
 
-int main() 
+int main()
 {
-	std::shared_ptr<ReentrantLock> r_lock;
-	r_lock = std::make_shared<ReentrantLock>();
-	
-	SharedClass sharedInstance(r_lock.get());
+	concurrency::ReEntrantLock lock;
+	concurrency::SharedClass sharedInstance(lock);
 
-	std::thread t1(&SharedClass::functionA, &sharedInstance);
-	std::thread t2(&SharedClass::functionB, &sharedInstance);
+	std::thread t1(&concurrency::SharedClass::functionA, &sharedInstance);
+	std::thread t2(&concurrency::SharedClass::functionB, &sharedInstance);
 
 	t1.join();
 	t2.join();

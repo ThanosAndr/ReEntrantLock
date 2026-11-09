@@ -1,36 +1,40 @@
 #pragma once
 
-#include <iostream>
-#include <thread>
-#include <mutex>
-#include <memory>
-#include <atomic>
 #include <condition_variable>
+#include <mutex>
+#include <thread>
 
 #include "Lock.hpp"
 
-class ReentrantLock : public Lock {
-	friend class ReentrantLockTest_MultipleThreads_Test;
-	friend class ReentrantLockTest_MultipleThreadsDiferentFunctions_Test;
-	friend class ReentrantLockTest_UnlockCalledByNonOwnerThread_Test;
-	friend class ReentrantLockTest_MultipleLockUnlockSingleThread_Test;
-public:
-	ReentrantLock()
-	:	m_mutex(),
-		m_cv(),
-		m_owner_id(),
-		m_count()
-	{}
+namespace concurrency {
 
-	virtual ~ReentrantLock() {}
+// A mutex that the owning thread may lock multiple times. It is released
+// once unlock() has been called as many times as lock().
+// Satisfies the standard Lockable requirements (lock, unlock, try_lock).
+class ReEntrantLock : public Lock {
+public:
+	ReEntrantLock() = default;
+	~ReEntrantLock() override = default;
 
 	void lock() override;
 
-	void unlock() override; 
+	void unlock() override;
+
+	// Acquires the lock without blocking. Returns true on success, including
+	// when the calling thread already owns it.
+	bool try_lock();
+
+	// Snapshot of the current recursion depth (0 when unlocked).
+	int get_count() const {
+		std::lock_guard<std::mutex> lk(m_mutex);
+		return m_count;
+	}
 
 private:
-	std::mutex m_mutex;
-	std::thread::id m_owner_id;
+	mutable std::mutex m_mutex;
 	std::condition_variable m_cv;
-	std::atomic<int> m_count {0};
+	std::thread::id m_owner_id;
+	int m_count {0};
 };
+
+} // namespace concurrency

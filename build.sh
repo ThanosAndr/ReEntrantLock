@@ -1,11 +1,7 @@
 #!/bin/bash
+set -euo pipefail
 
-# Create a build directory
-mkdir build
-cd build
+BUILD_TYPE="${1:-Release}"
 
-# Run CMake to generate build files
-cmake ..
-
-# Build the project
-make
+cmake -S . -B build -DCMAKE_BUILD_TYPE="$BUILD_TYPE"
+cmake --build build --config "$BUILD_TYPE" --parallel
