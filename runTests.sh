@@ -1,7 +1,6 @@
 #!/bin/bash
+set -euo pipefail
 
-# Go to the tests directory
-cd build/tests
-
-# Run the binary
-./ReEntrantLockTest
+# Run all registered tests via CTest
+cd build
+ctest --output-on-failure

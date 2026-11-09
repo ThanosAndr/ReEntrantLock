@@ -1,9 +1,13 @@
-project(ReEntrantLockTest)
+add_executable(ReEntrantLock_Test ReEntrantLockTests.cpp)
 
-set(TEST_SOURCES main.cpp ReEntrantLockTests.cpp)
+target_link_libraries(ReEntrantLock_Test
+  PRIVATE gtest_main ReEntrantLockLib SharedClassLib project_warnings)
 
-add_executable(ReEntrantLockTest ${TEST_SOURCES})
-add_test(NAME ReEntrantLockTests COMMAND ReEntrantLockTest)
-
-target_link_libraries(ReEntrantLockTest PUBLIC gtest)
-target_link_libraries(ReEntrantLockTest PUBLIC ReEntrantLockLib)
+include(GoogleTest)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.18)
+  # PRE_TEST: list the tests when ctest runs rather than at build time, so
+  # builds that can't run the binary yet (e.g. sanitizer builds) still succeed.
+  gtest_discover_tests(ReEntrantLock_Test DISCOVERY_MODE PRE_TEST)
+else()
+  gtest_discover_tests(ReEntrantLock_Test)
+endif()

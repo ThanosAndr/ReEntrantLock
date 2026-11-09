@@ -1,43 +1,40 @@
 #pragma once
 
 #include <iostream>
-#include <thread>
 #include <mutex>
-#include <memory>
-#include <atomic>
-#include <condition_variable>
+#include <string>
 
 #include "Lock.hpp"
 
+namespace concurrency {
+
+// Demo class: functionB calls functionA while already holding the lock,
+// which only works if the lock is reentrant.
 class SharedClass {
 public:
-
-	SharedClass(Lock * lock) {
-		this->lock = lock;
-	}
+	explicit SharedClass(Lock& lock)
+	:	m_lock(lock)
+	{}
 
 	void functionA() {
-		lock->lock();
+		std::lock_guard<Lock> guard(m_lock);
 
-		shared = "functionA";
-		std::cout << "in functionA, shared variable is now " << shared << '\n';
-
-		lock->unlock();
+		m_shared = "functionA";
+		std::cout << "in functionA, shared variable is now " << m_shared << '\n';
 	}
 
 	void functionB() {
-		lock->lock();
+		std::lock_guard<Lock> guard(m_lock);
 
-		shared = "functionB";
-		std::cout << "in functionB, shared variable is now " << shared  << '\n';
+		m_shared = "functionB";
+		std::cout << "in functionB, shared variable is now " << m_shared << '\n';
 		functionA();
-		std::cout << "back in functionB, shared variable is " << shared  << '\n';
-
-		lock->unlock();
+		std::cout << "back in functionB, shared variable is " << m_shared << '\n';
 	}
 
 private:
-	Lock * lock;
-	std::string shared;
-
+	Lock& m_lock;
+	std::string m_shared;
 };
+
+} // namespace concurrency

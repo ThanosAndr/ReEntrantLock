@@ -1,5 +1,3 @@
-project(SharedClassLib)
-
 add_library(SharedClassLib INTERFACE)
 
 target_include_directories(SharedClassLib INTERFACE include)
